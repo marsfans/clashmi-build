@@ -32,8 +32,8 @@ jobs:
 
       - name: Clone Clash.Meta Meta branch
         run: |
-          git clone https://github.com/MetaCubeX/Clash.Meta.git
-          cd Clash.Meta
+          git clone https://github.com/MetaCubeX/mihomo/tree/Meta.git
+          cd Meta
           git fetch origin Meta
           git checkout Meta
           cd ..
@@ -41,7 +41,7 @@ jobs:
       - name: Build libclash.framework
         run: |
           mkdir -p output
-          cd Clash.Meta
+          cd Meta
           # 如果核心包在 ./core，改成对应路径
           gomobile bind -target=ios -o ../output/libclash.framework ./core
           cd ..
