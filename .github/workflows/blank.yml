@@ -32,18 +32,14 @@ jobs:
 
       - name: Clone Clash.Meta Meta branch
         run: |
-          git clone https://github.com/MetaCubeX/mihomo.git
-          cd mihomo
-          git fetch origin Meta
-          git checkout Meta
-          cd ..
-
+          git clone https://github.com/chen08209/FlClash
+          
       - name: Build libclash.framework
         run: |
           mkdir -p output
-          cd mihomo
+          cd FlClash
           # 如果核心包在 ./core，改成对应路径
-          gomobile bind -target=ios -o ../output/libclash.xcframework ./
+          gomobile bind -target=ios -o ../output/libclash.xcframework ./core
           cd ..
       # 第二步：安装和配置 Flutter SDK
       - name: Setup Flutter
