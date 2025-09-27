@@ -19,7 +19,32 @@ jobs:
           repository: "KaringX/clashmi"
           submodules: true
           fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
 
+      - name: Install gomobile & gobind
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
+          gomobile init
+
+      - name: Clone Clash.Meta Meta branch
+        run: |
+          git clone https://github.com/MetaCubeX/Clash.Meta.git
+          cd Clash.Meta
+          git fetch origin Meta
+          git checkout Meta
+          cd ..
+
+      - name: Build libclash.framework
+        run: |
+          mkdir -p output
+          cd Clash.Meta
+          # 如果核心包在 ./core，改成对应路径
+          gomobile bind -target=ios -o ../output/libclash.framework ./core
+          cd ..
       # 第二步：安装和配置 Flutter SDK
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
