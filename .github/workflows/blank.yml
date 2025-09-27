@@ -26,7 +26,7 @@ jobs:
         with:
           channel: 'stable' # 使用稳定版的 Flutter
       - name: Checkout submodules
-        run: git submodule update --init --recursive
+        run: git clone https://github.com/KaringX/libclash-vpn-service ../libclash-vpn-service
       # 第三步：获取 Flutter 项目的依赖包
      
       - name: Get Flutter dependencies
