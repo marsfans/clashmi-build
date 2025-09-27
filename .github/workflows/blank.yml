@@ -32,7 +32,7 @@ jobs:
 
       - name: Clone Clash.Meta Meta branch
         run: |
-          git clone https://github.com/MetaCubeX/mihomo/tree/Meta.git
+          git clone https://github.com/MetaCubeX/mihomo.git
           cd Meta
           git fetch origin Meta
           git checkout Meta
