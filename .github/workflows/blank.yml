@@ -1,0 +1,42 @@
+# .github/workflows/build-ios.yml
+
+name: Build Unsigned ClashMI IPA
+
+# 允许手动从 Actions 标签页触发此工作流
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    # 使用 GitHub 提供的最新版 macOS 虚拟机
+    runs-on: macos-latest
+
+    steps:
+      # 第一步：检出（下载）你的仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: "KaringX/clashmi"
+          submodules: true
+          fetch-depth: 0
+
+      # 第二步：安装和配置 Flutter SDK
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # 使用稳定版的 Flutter
+
+      # 第三步：获取 Flutter 项目的依赖包
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      # 第四步：编译 iOS 应用 (IPA)，关键在于 --no-codesign
+      - name: Build unsigned IPA
+        run: flutter build ipa --no-codesign
+
+      # 第五步：上传编译好的 IPA 文件作为构建产物 (Artifact)
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clashmi-ipa # 上传后的文件名
+          path: build/ios/ipa/*.ipa # IPA 文件所在的路径
