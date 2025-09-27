@@ -43,15 +43,13 @@ jobs:
           mkdir -p output
           cd mihomo
           # 如果核心包在 ./core，改成对应路径
-          gomobile bind -target=ios -o ../output/libclash.framework ./core
+          gomobile bind -target=ios -o ../output/libclash.xcframework ./core
           cd ..
       # 第二步：安装和配置 Flutter SDK
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable' # 使用稳定版的 Flutter
-      - name: Checkout submodules
-        run: git clone https://github.com/KaringX/libclash-vpn-service ../libclash-vpn-service
       # 第三步：获取 Flutter 项目的依赖包
      
       - name: Get Flutter dependencies
