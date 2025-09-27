@@ -39,6 +39,7 @@ jobs:
           mkdir -p output
           cd FlClash/core
           go mod init
+          cd ..
           # 如果核心包在 ./core，改成对应路径
           gomobile bind -target=ios -o ../output/libclash.xcframework ./core
           cd ..
