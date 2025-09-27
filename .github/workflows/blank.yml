@@ -43,7 +43,7 @@ jobs:
           mkdir -p output
           cd mihomo
           # 如果核心包在 ./core，改成对应路径
-          gomobile bind -target=ios -o ../output/libclash.xcframework ./core
+          gomobile bind -target=ios -o ../output/libclash.xcframework ./
           cd ..
       # 第二步：安装和配置 Flutter SDK
       - name: Setup Flutter
