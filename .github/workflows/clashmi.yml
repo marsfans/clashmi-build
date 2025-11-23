@@ -1,0 +1,67 @@
+name: Build clashmi iOS IPA for Release
+
+on:
+  workflow_dispatch:        # 手动触发
+    inputs:
+      version:
+        description: '版本号'
+        required: true
+        default: '1.0.12.162'
+
+jobs:
+  build_ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: "KaringX/clashmi"
+          submodules: true
+          fetch-depth: 0
+          
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+      
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.25.x
+      
+      - name: Install gomobile & gobind
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          go install golang.org/x/mobile/cmd/gobind@latest
+          gomobile init
+      
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          cd ios
+          pod install --repo-update
+
+      - name: Build iOS .ipa (unsigned)
+        run: |
+          cd ios
+          # 这里假定使用 flutter build ios 生成 .ipa（无签名）或 xcodebuild 导出为 unsigned .ipa
+          flutter build ios --release --no-codesign
+          # 假设输出在 build/ios/iphoneos/Runner.ipa
+          mv build/ios/iphoneos/Runner.ipa ../clashmi-${{ github.event.inputs.version }}.ipa
+
+      - name: Upload .ipa to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: clashmi-v${{ github.event.inputs.version }}
+          release_name: clashmi-v${{ github.event.inputs.version }}
+          files: |
+            clashmi-${{ github.event.inputs.version }}.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact for workflow run
+        uses: actions/upload-artifact@v4
+        with:
+          name: clashmi-v${{ github.event.inputs.version }}
+          path: clashmi-${{ github.event.inputs.version }}.ipa
+
