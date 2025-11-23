@@ -23,7 +23,7 @@ jobs:
         uses: subosito/flutter-action@v2.14.0
         with:
           flutter-version: 'stable'
-          architecture: arm64
+          architecture: x64
       
       - name: Setup Go
         uses: actions/setup-go@v4
